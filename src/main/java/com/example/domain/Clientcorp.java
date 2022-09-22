@@ -10,11 +10,11 @@ import lombok.Setter;
 @Getter
 @Entity
 
-public class ClientCorp {
+public class Clientcorp {
 	@Id
 	int clientno;
 	String clientname;
 	String cempname;
-	int cmepphone;
+	int cempphone;
 
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class DelCorp {
+public class Delcorp {
 	@Id
 	int delno;
 	String delname;
