@@ -1,0 +1,35 @@
+# http port set
+server:
+  port: 8999
+
+spring:
+  # File Size
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  
+  # Oracle Connect
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: timfresh
+    password: fresh
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+
+ 
+
+  # ORM JPA
+  jpa:
+    hibernate:
+      ddl-auto: none  #  create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+ 
+  #view resolver(Templete ->JSP Use)
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+ 
