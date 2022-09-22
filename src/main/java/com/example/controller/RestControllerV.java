@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.Refund;
@@ -21,12 +22,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/vboard")
 public class RestControllerV {
 
 	private final ServiceInter sv;
 
 	// voc 목록 보기
-	@GetMapping("/api/vboard")
+	@GetMapping("")
 	public List<RefView> rview() {
 		List<Voc> list = sv.findall();
 		// 기사확인여부 (0 확인중, 1 승인, 2 거절, 3 확인필요없음)
@@ -63,20 +65,22 @@ public class RestControllerV {
 	}
 
 	
-	// voc 목록 상세보기 resp 가 1일때
-	@PostMapping("/api/rview/{claimno}")
+	// voc 목록 상세보기
+	@GetMapping("/{claimno}")
 	public Voc vboard(@PathVariable("claimno") int claimno) {
 		Voc voc = sv.view(claimno);
 		return voc;
 	}
 	
 	// 배상 정보 등록 (귀책당사자 2-운송사/배상요청여부 1 (등록전) -> 2 로 변경) 
-	@PostMapping("api/rpush")
-	public ResponseEntity<?> rpush(@RequestBody Refund refund) {
+	@PostMapping("/rpush")
+	public Refund rpush(@RequestBody Refund refund) {
 		Refund refsave=sv.save(refund);
-		return new ResponseEntity<>(refsave, HttpStatus.CREATED);
+		return refsave;
 	}
 	
+	// 배상 정보 목록
 	
+	// voc 등록
 
 }

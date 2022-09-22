@@ -24,6 +24,9 @@ public class Refund {
 	private Voc voc;
 	
 	@Builder
+	public Refund() {
+		
+	}
 	public Refund(int refno, int claimno, String refcont, int refprice, int driverynd, int refyn ) {
 		this.refno=refno;
 		this.voc.claimno=claimno; // voc 에서 가져옴

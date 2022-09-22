@@ -21,26 +21,42 @@
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
+<script type="text/javascript">
+	function vlist() {
+		const config = {
+				method: "get"
+		};
+		
+		fetch ('http://localhost:8999/vboard', config)
+			.then(res=>res.json())
+			.then(data=>console.log(data))
+			.then(data=>{
+				var table = document.getElementById('table1')
+	            for (var i = 0, ii = data.length; i < ii; i++) {
+	                var spot = data[i];
+	                
+	                var row = '<tr> <td>${spot.claimno}</td><td>${spot.resp}</td><td>${spot.respcont}</td><td>${spot.refyn}</td><td>${spot.driverynd}</td></tr'
+	        			table.innerHTML += row
+				}
+			}   
+		)
+	}
+
+
+
+</script>
 <body>
-	<table class="table table-striped">
+	<table class="table table-striped" >
 		<thead id="table_header">
 			<tr>
-				<th scope="col">문의번호</th>
-				<th scope="col">제목</th>
-				<th scope="col">작성자</th>
-				<th scope="col">등록일</th>
+				<th scope="col">번호</th>
+				<th scope="col">귀책당사자</th>
+				<th scope="col">귀책내용</th>
+				<th scope="col">배상요청여부</th>
 				<th scope="col">답변</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<th scope="row">${question.q_num}</th>
-				<td class="q_List">${question.q_subject}</td>
-				<td class="q_List">${question.member.name}</td>
-				<td class="q_List">${question.q_date}</td>
-				<td class="q_List">확인중</td>
-				<td class="q_List">답변 완료</td>
-			</tr>
+		<tbody id="table1">
 		</tbody>
 	</table>
 </body>
