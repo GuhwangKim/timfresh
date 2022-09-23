@@ -22,14 +22,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/vboard")
 public class RestControllerV {
 
 	private final ServiceInter sv;
 
 	// voc 목록 보기
-	@GetMapping("")
-	public List<RefView> rview() {
+	@GetMapping("/vboard")
+	public List<VocView> rview() {
 		List<Voc> list = sv.findall();
 		// 기사확인여부 (0 확인중, 1 승인, 2 거절, 3 확인필요없음)
 		List<Refund> chk = sv.chkdynd();
@@ -45,8 +44,8 @@ public class RestControllerV {
 				list.get(i).setDriverynd(3);
 			}
 		}
-		List<RefView> result = list.stream()
-				.map(m -> new RefView(m.getClaimno(), m.getResp(), m.getRespcont(), m.getRefyn(), m.getDriverynd()))
+		List<VocView> result = list.stream()
+				.map(m -> new VocView(m.getClaimno(), m.getResp(), m.getRespcont(), m.getRefyn(), m.getDriverynd()))
 				.collect(Collectors.toList());
 
 		return result;
@@ -56,7 +55,7 @@ public class RestControllerV {
 	// voc 목록 보기 (객체)
 	@Data
 	@AllArgsConstructor
-	class RefView {
+	class VocView {
 		private int claimno;
 		private int resp;
 		private String respcont;
@@ -65,21 +64,43 @@ public class RestControllerV {
 	}
 
 	
-	// voc 목록 상세보기
-	@GetMapping("/{claimno}")
+	// voc 목록 (일반) 상세보기
+	@GetMapping("/vboard/{claimno}")
 	public Voc vboard(@PathVariable("claimno") int claimno) {
 		Voc voc = sv.view(claimno);
 		return voc;
 	}
 	
+	// voc 목록 (배송등록) 상세보기
+	@GetMapping("/vrboard/{claimno}")
+	public VocRview vrboard(@PathVariable("claimno") int claimno) {
+		Voc voc = sv.view(claimno);
+		VocRview vocRview=new VocRview(claimno, voc.getDelcorp().getDelname(),  voc.getDelcorp().getDempname(),  voc.getDelcorp().getDempphone());
+		return vocRview;
+	}
+	
+	@Data
+	@AllArgsConstructor
+	class VocRview {
+		private int claimno;
+		private String delname;
+		private String dempname;
+		private int dempphone;
+	}
+	
 	// 배상 정보 등록 (귀책당사자 2-운송사/배상요청여부 1 (등록전) -> 2 로 변경) 
-	@PostMapping("/rpush")
-	public Refund rpush(@RequestBody Refund refund) {
-		Refund refsave=sv.save(refund);
+	@PostMapping("/vboard/rpush")
+	public Refund rpush(@RequestBody Refund refund, @RequestBody int claimno, int refyn) {
+		Refund refsave=sv.save(refund, claimno, refyn);
 		return refsave;
 	}
 	
 	// 배상 정보 목록
+	@GetMapping("/rboard")
+	public List<Refund> rboard(){
+		List<Refund> rlist=sv.chkdynd();
+		return rlist;
+	}
 	
 	// voc 등록
 

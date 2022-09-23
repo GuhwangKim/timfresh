@@ -43,9 +43,12 @@ public class RepositoryImpl implements RepositoryInter {
 
 	// 배상 목록 저장 
 	@Override
-	public Refund save(Refund refund) {
-		em.persist(refund);
-		return refund;		
+	public Refund save(Refund refund, int claimno, int refyn) {
+		Refund update=new Refund();
+		update.getVoc().setClaimno(claimno);
+		update.getVoc().setRefyn(refyn);
+		em.persist(update);
+		return update;		
 	}
 
 }

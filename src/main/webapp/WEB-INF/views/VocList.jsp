@@ -15,49 +15,70 @@
 	crossorigin="anonymous">
 <!-- js -->
 <script src="js/jquery.js"></script>
-<!-- <script type="text/javascript" src="js/*"></script> -->
-<script src="js/jquery.js"></script>
 <script type="text/javascript" src="js/httpRequest.js"></script>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <script type="text/javascript">
-	function vlist() {
-		const config = {
-				method: "get"
-		};
-		
-		fetch ('http://localhost:8999/vboard', config)
-			.then(res=>res.json())
-			.then(data=>console.log(data))
-			.then(data=>{
-				var table = document.getElementById('table1')
-	            for (var i = 0, ii = data.length; i < ii; i++) {
-	                var spot = data[i];
-	                
-	                var row = '<tr> <td>${spot.claimno}</td><td>${spot.resp}</td><td>${spot.respcont}</td><td>${spot.refyn}</td><td>${spot.driverynd}</td></tr'
-	        			table.innerHTML += row
-				}
-			}   
-		)
+	fetch ('http://localhost:8999/vboard')
+	.then(res => {
+		console.log(res);
+		return res.json();
 	}
-
-
-
+	)
+	.then(data => {
+		console.log(data)
+		for (var i = 0, ii = data.length; i < ii; i++) {
+			var str=data[i];
+			if(str.resp==0){
+	        	str.resp='고객사'
+	        } else if (str.resp==1) {
+	        	str.resp='운송사'
+			} 
+			
+			
+	        if(str.refyn==0){
+	        	str.refyn='배상없음'
+	        } else if (str.refyn==11) {
+	        	str.refyn='<button onclick="location.href=&#039;refPush?claimno='+str.claimno+'&#039;">배상등록</button>'
+			} else if (str.refyn==12) {
+	        	str.refyn='배상등록완료'
+			}
+	        
+	        
+	        if(str.driverynd==3){
+	        	str.driverynd='-'
+	        } else if (str.driverynd==0) {
+	        	str.driverynd='확인중'
+			} else if (str.driverynd==1) {
+	        	str.driverynd='승인'
+			} else if (str.driverynd==2) {
+	        	str.driverynd='거부'
+			}
+	        
+			$('#table1').append("<tr><td>"+str.claimno+"</td><td>"+str.resp+"</td><td>"+str.respcont+"</td><td>"+str.refyn+"</td><td>"+str.driverynd+"</td></tr>");
+		
+		}
+		
+	})
+	.catcher(err => {
+		console.log("Fetch Error",err);
+	})
 </script>
 <body>
-	<table class="table table-striped" >
+	<table class="table table-striped">
 		<thead id="table_header">
 			<tr>
 				<th scope="col">번호</th>
 				<th scope="col">귀책당사자</th>
 				<th scope="col">귀책내용</th>
 				<th scope="col">배상요청여부</th>
-				<th scope="col">답변</th>
+				<th scope="col">기사확인여부</th>
 			</tr>
 		</thead>
 		<tbody id="table1">
 		</tbody>
+		
 	</table>
 </body>
 </html>

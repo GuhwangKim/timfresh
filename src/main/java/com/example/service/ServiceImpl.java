@@ -43,10 +43,12 @@ public class ServiceImpl implements ServiceInter {
 	
 	// 배상 목록 저장 
 	@Override
-	public Refund save(Refund refund) {
-		Refund refsave=rp.save(refund);
+	public Refund save(Refund refund, int claimno, int refyn) {
+		System.out.println("번호"+refund.getVoc().getClaimno());
+		Refund refsave=rp.save(refund, claimno, refyn);
+		System.out.println("여부"+refsave.getVoc().getRefyn());
 		return refsave;
 	}
-
+	
 
 }

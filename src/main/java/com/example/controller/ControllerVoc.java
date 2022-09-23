@@ -13,9 +13,23 @@ public class ControllerVoc {
 	
 	private final ServiceInter sv;
 	
+	//voc 목록
 	@RequestMapping(value = "vocList")
-	public String vocList(Model model) {
+	public String vocList() {
 		return "VocList";
+	}
+	
+	// voc 상세 (배상등록)
+	@RequestMapping(value = "refPush")
+	public String refPush(int claimno, Model model) {
+		model.addAttribute("claimno", claimno);
+		return "RefPush";
+	}
+	
+	// 배상 목록 
+	@RequestMapping(value = "refList")
+	public String refList() {
+		return "RefList";
 	}
 
 }

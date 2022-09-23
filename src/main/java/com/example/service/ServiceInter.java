@@ -13,5 +13,6 @@ public interface ServiceInter {
 
 	Voc view(int claimno);
 
-	Refund save(Refund refund);
+	Refund save(Refund refund, int claimno, int refyn);
+
 }
