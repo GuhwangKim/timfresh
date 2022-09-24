@@ -8,12 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.domain.Clientcorp;
+import com.example.domain.Delcorp;
 import com.example.domain.Refund;
+import com.example.domain.RefundP;
 import com.example.domain.Voc;
+import com.example.domain.VocP;
 import com.example.service.ServiceInter;
 
 import lombok.AllArgsConstructor;
@@ -28,10 +33,10 @@ public class RestControllerV {
 
 	// voc 목록 보기
 	@GetMapping("/vboard")
-	public List<VocView> rview() {
-		List<Voc> list = sv.findall();
+	public List<VocView> vFindall() {
+		List<Voc> list = sv.vFindall();
 		// 기사확인여부 (0 확인중, 1 승인, 2 거절, 3 확인필요없음)
-		List<Refund> chk = sv.chkdynd();
+		List<Refund> chk = sv.rFindall();
 
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).getRefyn() == 12) {
@@ -50,7 +55,6 @@ public class RestControllerV {
 
 		return result;
 	}
-
 	
 	// voc 목록 보기 (객체)
 	@Data
@@ -62,19 +66,19 @@ public class RestControllerV {
 		private int refyn;
 		private int driverynd;
 	}
-
 	
 	// voc 목록 (일반) 상세보기
 	@GetMapping("/vboard/{claimno}")
-	public Voc vboard(@PathVariable("claimno") int claimno) {
-		Voc voc = sv.view(claimno);
+	public Voc vView(@PathVariable("claimno") int claimno) {
+		Voc voc = sv.vView(claimno);
 		return voc;
 	}
+
 	
-	// voc 목록 (배송등록) 상세보기
+	// voc 목록 (배상등록-운송사) 상세보기
 	@GetMapping("/vrboard/{claimno}")
-	public VocRview vrboard(@PathVariable("claimno") int claimno) {
-		Voc voc = sv.view(claimno);
+	public VocRview vrView(@PathVariable("claimno") int claimno) {
+		Voc voc = sv.vView(claimno);
 		VocRview vocRview=new VocRview(claimno, voc.getDelcorp().getDelname(),  voc.getDelcorp().getDempname(),  voc.getDelcorp().getDempphone());
 		return vocRview;
 	}
@@ -88,20 +92,58 @@ public class RestControllerV {
 		private int dempphone;
 	}
 	
-	// 배상 정보 등록 (귀책당사자 2-운송사/배상요청여부 1 (등록전) -> 2 로 변경) 
+	// voc 등록
+	@PostMapping("/vboard/vpush")
+	public Voc vSave(@RequestBody VocP vocp) {
+		// 고객사 정보 불러오기 
+		Clientcorp clientcorp = sv.cFind(vocp.getClientno());
+		// 운송사 정보 불러오기 
+		Delcorp delcorp = sv.dFind(vocp.getDelno());
+
+		Voc voc=new Voc();
+		voc.setOrderno(vocp.getOrderno());
+		voc.setResp(vocp.getResp());
+		voc.setRespcont(vocp.getRespcont());
+		voc.setRefyn(vocp.getRefyn());
+		voc.setClientcorp(clientcorp);
+		voc.setDelcorp(delcorp);
+		voc = sv.vSave(voc);
+		return voc;
+	}
+	
+	// 배상 정보 등록 (운송사/고객사) 
 	@PostMapping("/vboard/rpush")
-	public Refund rpush(@RequestBody Refund refund, @RequestBody int claimno, int refyn) {
-		Refund refsave=sv.save(refund, claimno, refyn);
+	public Refund rSave(@RequestBody RefundP refundp) {
+		
+		// refund 에 집어넣을  voc 객체 가져오기 
+		Voc voc = new Voc();
+		voc=sv.vView(refundp.getClaimno()); 
+		voc.setRefyn(refundp.getRefyn()); //등록완료로 변경 
+		
+		Refund refsave= new Refund();
+		refsave.setVoc(voc);
+		refsave.setRefcont(refundp.getRefcont());
+		refsave.setRefprice(refundp.getRefprice());
+		refsave.setDriverynd(refundp.getDriverynd());
+		refsave=sv.rSave(refsave);
 		return refsave;
 	}
 	
 	// 배상 정보 목록
 	@GetMapping("/rboard")
-	public List<Refund> rboard(){
-		List<Refund> rlist=sv.chkdynd();
+	public List<Refund> rFindall(){
+		List<Refund> rlist=sv.rFindall();
 		return rlist;
 	}
 	
-	// voc 등록
+	// 기사 승인 확인 
+	@PutMapping("/dchk/{claimno}")
+	public Voc dchk(@PathVariable("claimno") int claimno) {
+		Voc voc = sv.vView(claimno);
+		
+		
+		
+		return voc;
+	}
 
 }

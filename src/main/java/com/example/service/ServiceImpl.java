@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.dao.RepositoryImpl;
 import com.example.dao.RepositoryInter;
+import com.example.domain.Clientcorp;
+import com.example.domain.Delcorp;
 import com.example.domain.Refund;
 import com.example.domain.Voc;
 
@@ -23,32 +25,52 @@ public class ServiceImpl implements ServiceInter {
 
 	// Voc 게시판 목록
 	@Override
-	public List<Voc> findall() {
-		List<Voc> list = rp.findall();
+	public List<Voc> vFindall() {
+		List<Voc> list = rp.vFindall();
 		return list;
 	}
-	// Voc 게시판 목록 - (기사확인여부)
+	
+	// Refund 목록 (Voc 게시판 목록 - (기사확인여부))
 	@Override
-	public List<Refund> chkdynd() {
-		List<Refund>chk=rp.chkdynd();
+	public List<Refund> rFindall() {
+		List<Refund>chk=rp.rFindall();
 		return chk;
 	}
 	
-	// 배상 목록 등록 상세보기 resp 가 1일때
+	// voc 목록 (배상등록-운송사) 상세보기
 	@Override
-	public Voc view(int claimno) {
-		Voc view = rp.view(claimno);
+	public Voc vView(int claimno) {
+		Voc view = rp.vView(claimno);
 		return view;
 	}
 	
-	// 배상 목록 저장 
+	// 배상 정보 등록 (운송사) 
 	@Override
-	public Refund save(Refund refund, int claimno, int refyn) {
-		System.out.println("번호"+refund.getVoc().getClaimno());
-		Refund refsave=rp.save(refund, claimno, refyn);
-		System.out.println("여부"+refsave.getVoc().getRefyn());
+	public Refund rSave(Refund refund) {
+		Refund refsave=rp.rSave(refund);
 		return refsave;
 	}
+	// 배상 정보 등록 (고객사) 
 	
+	// Voc 게시물 등록
+	@Override
+	public Voc vSave(Voc voc) {
+		Voc vwrite = rp.vSave(voc);
+		return vwrite;
+	}
+	// 고객사 정보 
+	@Override
+	public Clientcorp cFind(int clientno) {
+		Clientcorp clientcorp = rp.cFind(clientno);
+		return clientcorp;
+	}
+	// 운송사 정보 
+	@Override
+	public Delcorp dFind(int delno) {
+		Delcorp delcorp = rp.dFind(delno);
+		return delcorp;
+	}
+	// 기사 승인 확인 
+
 
 }

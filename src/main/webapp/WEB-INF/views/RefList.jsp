@@ -30,22 +30,6 @@
 		console.log(data)
 		for (var i = 0, ii = data.length; i < ii; i++) {
 			var str=data[i];
-			if(str.resp==0){
-	        	str.resp='고객사'
-	        } else if (str.resp==1) {
-	        	str.resp='운송사'
-			} 
-			
-			
-	        if(str.refyn==0){
-	        	str.refyn='배상없음'
-	        } else if (str.refyn==11) {
-	        	str.refyn='<button onclick="location.href=&#039;refPush?claimno='+str.claimno+'&#039;">배상등록</button>'
-			} else if (str.refyn==12) {
-	        	str.refyn='배상등록완료'
-			}
-	        
-	        
 	        if(str.driverynd==3){
 	        	str.driverynd=''
 	        } else if (str.driverynd==0) {
@@ -55,15 +39,20 @@
 			} else if (str.driverynd==2) {
 	        	str.driverynd='거부'
 			}
-	        
-			$('#table2').append("<tr><td>"+str.claimno+"</td><td>"+str.resp+"</td><td>"+str.respcont+"</td><td>"+str.refyn+"</td><td>"+str.driverynd+"</td></tr>");
-		
+			$('#table2').append("<tr><td><a href='refView?claimno="+str.refno+"'>"+str.refno+"</a><td>"+str.voc.claimno+"</td><td>"+str.refcont+"</td><td>"+str.refprice+"</td><td>"+str.driverynd+"</td></tr>");
 		}
 		
 	})
 	.catcher(err => {
 		console.log("Fetch Error",err);
 	})
+	
+	function cldninp() {
+		var claimno=prompt("클레임번호입력");
+		location.href="driverChk?claimno="+claimno+""; 
+	}
+	
+	
 </script>
 <body>
 	<table class="table table-striped">
@@ -78,7 +67,9 @@
 		</thead>
 		<tbody id="table2">
 		</tbody>
-		
 	</table>
+	<button onclick="location.href='refSaveC'">배상등록</button>
+	<button onclick="location.href='vocList'">Voc목록</button>
+	<button onclick="cldninp();">(임의)기사승인체크</button>
 </body>
 </html>

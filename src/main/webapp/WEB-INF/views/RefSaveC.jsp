@@ -21,8 +21,6 @@
 </head>
 
 <script type="text/javascript">
-	var claimno = '${claimno}';
-	
 	fetch ('http://localhost:8999/vrboard/'+claimno)
 	.then(res => {
 		console.log(res);
@@ -41,21 +39,18 @@
 		console.log("Fetch Error",err);
 	})
 	
-	
 	function rsave() {
-		var claimno = String($('#claim').val());
-		var refyn= String(12); // 등록완료
-		
 		var jsonData=JSON.stringify({
+			claimno: $('#clnum').val(),
 			refcont: $('#vcontent').val(),
 			refprice: $('#vprice').val(),
-			driverynd: 0, // 승인중
+			driverynd: 3, // 승인중
+			refyn: 12 // 등록완료
 		});
 		
 		$.ajax({
 			url:"http://localhost:8999/vboard/rpush",
 			type: "POST",
-			data: {"claimno":claimno, "refyn":refyn},
 			data: jsonData, 
 			contentType: "application/json",
 			dataType: "json",
@@ -65,8 +60,6 @@
 			}
 			
 		})
-		
-		
 	}
 </script>
 
@@ -74,24 +67,20 @@
 <body>
 	<div id="Ques_WriteForm">
 		<div>
-			<h1>배상정보입력</h1>
+			<h1>고객사 배상 입력</h1>
 		</div>
-
-		<form action="refList" id="frm" method="post" onsubmit="rsave();">
-			<h5>운송사명</h5>
-			<span id="delname"></span>
-			<h5>기사 이름</h5>
-			<span id="dempname"></span>
-			<h5>기사 번호</h5>
-			<span id="dempphone"></span> 
-			<input type="hidden" id="claim" value="${claimno}"/>
+		<form action=refList id="frm" method="post" onsubmit="rsave();">
+			<div class="input-group mb-3">
+				<span class="input-group-text">클레임번호</span>
+				<input type="number" class="form-control" aria-label="With textarea" name="q_content" id="clnum" required="required"></input>
+			</div>
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="basic-addon2">패널티 내용</span>
-				<textarea type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" name="q_subject" id="vcontent"></textarea>
+				<textarea type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" name="q_subject" id="vcontent" required="required"></textarea>
 			</div>
 			<div class="input-group">
 				<span class="input-group-text">패널티 금액</span>
-				<input type="number" class="form-control" aria-label="With textarea" name="q_content" id="vprice"></input>
+				<input type="number" class="form-control" aria-label="With textarea" name="q_content" id="vprice" required="required"></input>
 			</div>
 			<div>
 				<button type="submit" class="btn btn-primary">등록</button>

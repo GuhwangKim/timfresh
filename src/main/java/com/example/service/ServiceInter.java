@@ -2,17 +2,25 @@ package com.example.service;
 
 import java.util.List;
 
+import com.example.domain.Clientcorp;
+import com.example.domain.Delcorp;
 import com.example.domain.Refund;
 import com.example.domain.Voc;
 
 public interface ServiceInter {
 
-	List<Voc> findall();
+	List<Voc> vFindall();
 
-	List<Refund> chkdynd();
+	List<Refund> rFindall();
 
-	Voc view(int claimno);
+	Voc vView(int claimno);
 
-	Refund save(Refund refund, int claimno, int refyn);
+	Refund rSave(Refund refund);
+
+	Voc vSave(Voc voc);
+
+	Clientcorp cFind(int clientno);
+
+	Delcorp dFind(int delno);
 
 }

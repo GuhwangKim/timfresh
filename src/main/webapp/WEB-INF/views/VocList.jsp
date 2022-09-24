@@ -30,22 +30,25 @@
 		console.log(data)
 		for (var i = 0, ii = data.length; i < ii; i++) {
 			var str=data[i];
-			if(str.resp==0){
+			
+	        if(str.refyn==0){
+	        	str.refyn='배상없음'
+	        } else if (str.refyn==11) {
+	        	if(str.resp==0){
+	        	str.refyn='배상요청'
+	        	}else if (str.resp==1) {
+		        	str.refyn='<button onclick="location.href=&#039;refSaveD?claimno='+str.claimno+'&#039;">배상등록</button>'
+				}
+			} else if (str.refyn==12) {
+	        	str.refyn='배상등록완료'
+			}
+	        
+	        if(str.resp==0){
 	        	str.resp='고객사'
 	        } else if (str.resp==1) {
 	        	str.resp='운송사'
 			} 
 			
-			
-	        if(str.refyn==0){
-	        	str.refyn='배상없음'
-	        } else if (str.refyn==11) {
-	        	str.refyn='<button onclick="location.href=&#039;refPush?claimno='+str.claimno+'&#039;">배상등록</button>'
-			} else if (str.refyn==12) {
-	        	str.refyn='배상등록완료'
-			}
-	        
-	        
 	        if(str.driverynd==3){
 	        	str.driverynd='-'
 	        } else if (str.driverynd==0) {
@@ -55,8 +58,7 @@
 			} else if (str.driverynd==2) {
 	        	str.driverynd='거부'
 			}
-	        
-			$('#table1').append("<tr><td>"+str.claimno+"</td><td>"+str.resp+"</td><td>"+str.respcont+"</td><td>"+str.refyn+"</td><td>"+str.driverynd+"</td></tr>");
+			$('#table1').append("<tr><td><a href='vocView?claimno="+str.claimno+"'>"+str.claimno+"</a></td><td>"+str.resp+"</td><td>"+str.respcont+"</td><td>"+str.refyn+"</td><td>"+str.driverynd+"</td></tr>");
 		
 		}
 		
@@ -70,7 +72,7 @@
 		<thead id="table_header">
 			<tr>
 				<th scope="col">번호</th>
-				<th scope="col">귀책당사자</th>
+				<th scope="col"><a>귀책당사자</a></th>
 				<th scope="col">귀책내용</th>
 				<th scope="col">배상요청여부</th>
 				<th scope="col">기사확인여부</th>
@@ -78,7 +80,8 @@
 		</thead>
 		<tbody id="table1">
 		</tbody>
-		
 	</table>
+	<button onclick="location.href='vocSave';">Voc등록</button>
+	<button onclick="location.href='refList'">배상목록</button>
 </body>
 </html>
