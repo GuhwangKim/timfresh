@@ -23,4 +23,7 @@ public interface ServiceInter {
 
 	Delcorp dFind(int delno);
 
+	Refund rFind(int refno);
+
+
 }

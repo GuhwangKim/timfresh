@@ -23,5 +23,8 @@ public interface RepositoryInter {
 
 	Delcorp dFind(int delno);
 
+	Refund rFind(int refno);
+
+
 
 }

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>배상정보등록</title>
+<title>기사승인확인</title>
 <!-- bootstrap -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -21,7 +21,9 @@
 </head>
 
 <script type="text/javascript">
-	fetch ('http://localhost:8999/vrboard/'+claimno)
+	var refno = '${refno}';
+	
+	fetch ('http://localhost:8999/gdchk/'+refno)
 	.then(res => {
 		console.log(res);
 		return res.json();
@@ -29,34 +31,30 @@
 	)
 	.then(data => {
 		console.log(data)
-			$('#delname').append(data.delname);
-			$('#dempname').append(data.dempname);
-			$('#dempphone').append(data.dempphone);
-		}
-		
+			$('#claimno').append(data.claimno);
+			$('#refcont').append(data.refcont);
+			$('#refprice').append(data.refprice);
+	}
 	)
 	.catcher(err => {
 		console.log("Fetch Error",err);
 	})
 	
 	
-	function rsave() {
+	function dupdate() {
 		var jsonData=JSON.stringify({
-			claimno: $('#clnum').val(),
-			refcont: $('#vcontent').val(),
-			refprice: $('#vprice').val(),
-			driverynd: 3, // 승인중
-			refyn: 12 // 등록완료
+			refno: $('#ref').val(),
+			driverynd: $('#dvynd').val()
 		});
 		
 		$.ajax({
-			url:"http://localhost:8999/vboard/rpush",
-			type: "POST",
+			url:"http://localhost:8999/pdchk/"+$('#ref').val(),
+			type: "PUT",
 			data: jsonData, 
 			contentType: "application/json",
 			dataType: "json",
 			success: function(){
-				alert('성공');
+				alert('변경완료');
 				return true;
 			}
 			
@@ -68,25 +66,25 @@
 <body>
 	<div id="Ques_WriteForm">
 		<div>
-			<h1>기사확인여부</h1>
+			<h1>승인확인</h1>
 		</div>
-
-		<form action=refList id="frm" method="post" onsubmit="rsave();">
-			<div class="input-group mb-3">
-				<span class="input-group-text">클레임번호</span>
-				<input type="number" class="form-control" aria-label="With textarea" name="q_content" id="clnum" required="required"></input>
-			</div>
-			<div class="input-group mb-3">
-				<span class="input-group-text" id="basic-addon2">패널티 내용</span>
-				<textarea type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" name="q_subject" id="vcontent" required="required"></textarea>
-			</div>
-			<div class="input-group">
-				<span class="input-group-text">패널티 금액</span>
-				<input type="number" class="form-control" aria-label="With textarea" name="q_content" id="vprice" required="required"></input>
-			</div>
-			<div>
-				<button type="submit" class="btn btn-primary">등록</button>
-			</div>
+		<form action=refList id="frm" method="get" onsubmit="dupdate();">
+			<input type="hidden" id="ref" value="${refno}"/>
+			<input type="hidden" name="_method" value="put"/>
+			<h5>클레임번호 : <span id="claimno"></span></h5>
+			<h5>배상내용 : <span id="refcont"></span></h5>
+			<h5>배상가격 : <span id="refprice"></span> </h5>
+			<c:if test="${driverynd !=3}">
+				<div class="input-group mb-3">
+					<span class="input-group-text" id="basic-addon1">기사확인여부</span> 
+					<select class="form-select" id="dvynd" name="q_category">
+						<option selected>(선택하세요)</option>
+						<option value="1">승인</option>
+						<option value="2">거부</option>
+					</select>
+				</div>
+				<button class="btn btn-primary" type="submit">신청</button>
+			</c:if>
 		</form>
 	</div>
 </body>

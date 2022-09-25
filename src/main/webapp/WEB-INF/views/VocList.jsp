@@ -35,12 +35,12 @@
 	        	str.refyn='배상없음'
 	        } else if (str.refyn==11) {
 	        	if(str.resp==0){
-	        	str.refyn='배상요청'
+	        	str.refyn='<b>배상요청</b>'
 	        	}else if (str.resp==1) {
 		        	str.refyn='<button onclick="location.href=&#039;refSaveD?claimno='+str.claimno+'&#039;">배상등록</button>'
 				}
 			} else if (str.refyn==12) {
-	        	str.refyn='배상등록완료'
+	        	str.refyn='<font color="green">배상등록완료</font>';
 			}
 	        
 	        if(str.resp==0){
@@ -54,9 +54,9 @@
 	        } else if (str.driverynd==0) {
 	        	str.driverynd='확인중'
 			} else if (str.driverynd==1) {
-	        	str.driverynd='승인'
+	        	str.driverynd='<font color="blue">승인</font>'
 			} else if (str.driverynd==2) {
-	        	str.driverynd='거부'
+	        	str.driverynd='<font color="red">거부</font>'
 			}
 			$('#table1').append("<tr><td><a href='vocView?claimno="+str.claimno+"'>"+str.claimno+"</a></td><td>"+str.resp+"</td><td>"+str.respcont+"</td><td>"+str.refyn+"</td><td>"+str.driverynd+"</td></tr>");
 		
@@ -81,7 +81,7 @@
 		<tbody id="table1">
 		</tbody>
 	</table>
-	<button onclick="location.href='vocSave';">Voc등록</button>
-	<button onclick="location.href='refList'">배상목록</button>
+	<button class="btn btn-primary" onclick="location.href='vocSave';">Voc등록</button>
+	<button class="btn btn-primary" onclick="location.href='refList'">배상목록</button>
 </body>
 </html>

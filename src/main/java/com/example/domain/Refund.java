@@ -30,11 +30,6 @@ public class Refund {
 	private Voc voc;
 	
 	
-	@Transient
-	int claim_no;
-	@Transient
-	int ref_yn;
-	
 	@Builder
 	public Refund() {
 		

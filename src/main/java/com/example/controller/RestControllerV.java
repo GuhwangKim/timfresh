@@ -3,14 +3,11 @@ package com.example.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.Clientcorp;
@@ -136,14 +133,40 @@ public class RestControllerV {
 		return rlist;
 	}
 	
-	// 기사 승인 확인 
-	@PutMapping("/dchk/{claimno}")
-	public Voc dchk(@PathVariable("claimno") int claimno) {
-		Voc voc = sv.vView(claimno);
-		
-		
-		
-		return voc;
+	// 배상 정보 상세 
+	@GetMapping("/rboard/{refno}")
+	public Refund rFind(@PathVariable("refno") int refno) {
+		Refund ref = sv.rFind(refno);
+		return ref;
 	}
+	
+	// 기사 승인 확인 목록
+	@GetMapping("/gdchk/{refno}")
+	public DriverChk dchk(@PathVariable("refno") int refno) {
+		Refund ref = sv.rFind(refno);
+		DriverChk dchk=new DriverChk(refno, ref.getVoc().getClaimno(), ref.getRefcont(), ref.getRefprice(), ref.getDriverynd());
+		return dchk;
+	}
+	@Data
+	@AllArgsConstructor
+	class DriverChk {
+		private int refno;
+		private int claimno;
+		private String refcont;
+		private int refprice;
+		private int driverynd;
+	}
+	
+	
+	// 기사 승인 확인 업데이트
+	@PutMapping("/pdchk/{refno}")
+	public Refund dupdate(@RequestBody Refund refund) {
+		Refund ref = sv.rFind(refund.getRefno());
+		ref.setDriverynd(refund.getDriverynd());
+		ref=sv.rSave(ref);
+		return ref;
+	}
+	
+	
 
 }

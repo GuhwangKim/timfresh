@@ -16,7 +16,6 @@ spring:
     password: fresh
     driver-class-name: oracle.jdbc.driver.OracleDriver
 
- 
 
   # ORM JPA
   jpa:
@@ -32,4 +31,7 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+    hiddenmethod:
+      filter:
+        enabled: true
  

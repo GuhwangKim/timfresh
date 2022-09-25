@@ -31,15 +31,21 @@
 		for (var i = 0, ii = data.length; i < ii; i++) {
 			var str=data[i];
 	        if(str.driverynd==3){
-	        	str.driverynd=''
+	        	str.driverynd='-'
 	        } else if (str.driverynd==0) {
 	        	str.driverynd='확인중'
 			} else if (str.driverynd==1) {
-	        	str.driverynd='승인'
+	        	str.driverynd='<font color="blue">승인</font>'
 			} else if (str.driverynd==2) {
-	        	str.driverynd='거부'
+	        	str.driverynd='<font color="red">거부</font>'
 			}
-			$('#table2').append("<tr><td><a href='refView?claimno="+str.refno+"'>"+str.refno+"</a><td>"+str.voc.claimno+"</td><td>"+str.refcont+"</td><td>"+str.refprice+"</td><td>"+str.driverynd+"</td></tr>");
+	        if(str.voc.resp==0){
+	        	str.voc.resp='고객사'
+	        } else if (str.voc.resp==1) {
+	        	str.voc.resp='운송사'
+			} 
+	        
+			$('#table2').append("<tr><td><a href='refView?refno="+str.refno+"'>"+str.refno+"</a><td>"+str.voc.claimno+"</td><td>"+str.voc.resp+"</td><td>"+str.refcont+"</td><td>"+str.refprice+"</td><td>"+str.driverynd+"</td></tr>");
 		}
 		
 	})
@@ -48,11 +54,14 @@
 	})
 	
 	function cldninp() {
-		var claimno=prompt("클레임번호입력");
-		location.href="driverChk?claimno="+claimno+""; 
+		var refno=prompt("배상번호입력");
+		if(refno){
+			location.href="driverChk?refno="+refno+""; 
+		} else{ 
+			alert("배상번호를 입력하세요")
+			location.href="refList";
+		}
 	}
-	
-	
 </script>
 <body>
 	<table class="table table-striped">
@@ -60,6 +69,7 @@
 			<tr>
 				<th scope="col">배상번호</th>
 				<th scope="col">클레임번호</th>
+				<th scope="col">귀책당사자</th>
 				<th scope="col">패널티내용</th>
 				<th scope="col">패널티금액</th>
 				<th scope="col">기사확인여부</th>
@@ -68,8 +78,8 @@
 		<tbody id="table2">
 		</tbody>
 	</table>
-	<button onclick="location.href='refSaveC'">배상등록</button>
-	<button onclick="location.href='vocList'">Voc목록</button>
-	<button onclick="cldninp();">(임의)기사승인체크</button>
+	<button class="btn btn-primary" onclick="location.href='refSaveC'">배상등록</button>
+	<button class="btn btn-primary" onclick="location.href='vocList'">Voc목록</button>
+	<button class="btn btn-primary" onclick="cldninp();">(임의)기사승인체크</button>
 </body>
 </html>

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.Refund;
 import com.example.service.ServiceInter;
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,8 @@ public class ControllerVoc {
 	
 	//voc 상세보기 
 	@RequestMapping(value = "vocView")
-	public String vocView() {
+	public String vocView(int claimno, Model model) {
+		model.addAttribute("claimno", claimno);
 		return "VocView";
 	}
 	
@@ -52,17 +54,18 @@ public class ControllerVoc {
 	
 	// 배상 상세보기 
 	@RequestMapping(value = "refView")
-	public String refView() {
+	public String refView(int refno, Model model) {
+		model.addAttribute("refno", refno);
 		return "RefView";
 	}
 	
 	// 기사 승인 확인 
 	@RequestMapping(value = "driverChk")
-	public String driverChk(int claimno, Model model) {
-		model.addAttribute("claimno", claimno);
+	public String driverChk(int refno, Model model) {
+		Refund refd=sv.rFind(refno);
+		model.addAttribute("refno", refno);
+		model.addAttribute("driverynd", refd.getDriverynd());
 		return "DriverChk";
 	}
-	
-	
 
 }

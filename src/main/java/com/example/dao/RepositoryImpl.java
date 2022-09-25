@@ -70,9 +70,13 @@ public class RepositoryImpl implements RepositoryInter {
 		em.persist(refund);
 		return refund;		
 	}
-	
-	// 기사 승인 확인 
-	
-	
+
+	// 기사 승인 확인 목록
+	@Override
+	public Refund rFind(int refno) {
+		Refund ref = em.find(Refund.class, refno);
+		return ref;
+	}
+
 	
 }

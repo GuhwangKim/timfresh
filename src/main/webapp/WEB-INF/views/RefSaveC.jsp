@@ -78,12 +78,12 @@
 				<span class="input-group-text" id="basic-addon2">패널티 내용</span>
 				<textarea type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" name="q_subject" id="vcontent" required="required"></textarea>
 			</div>
-			<div class="input-group">
+			<div class="input-group mb-3">
 				<span class="input-group-text">패널티 금액</span>
 				<input type="number" class="form-control" aria-label="With textarea" name="q_content" id="vprice" required="required"></input>
 			</div>
 			<div>
-				<button type="submit" class="btn btn-primary">등록</button>
+				<button class="btn btn-primary" type="submit" class="btn btn-primary">등록</button>
 			</div>
 		</form>
 	</div>

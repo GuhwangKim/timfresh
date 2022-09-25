@@ -70,7 +70,13 @@ public class ServiceImpl implements ServiceInter {
 		Delcorp delcorp = rp.dFind(delno);
 		return delcorp;
 	}
-	// 기사 승인 확인 
+	// 기사 승인 확인 목록
+	@Override
+	public Refund rFind(int refno) {
+		Refund ref = rp.rFind(refno);
+		return ref;
+	}
+	
 
 
 }

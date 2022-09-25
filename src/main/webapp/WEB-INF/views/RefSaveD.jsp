@@ -76,12 +76,9 @@
 		</div>
 
 		<form action=refList id="frm" method="post" onsubmit="rsave();">
-			<h5>운송사명</h5>
-			<span id="delname"></span>
-			<h5>기사 이름</h5>
-			<span id="dempname"></span>
-			<h5>기사 번호</h5>
-			<span id="dempphone"></span> 
+			<h5>운송사명 : <span id="delname"></span></h5>
+			<h5>기사 이름 : <span id="dempname"></span></h5>
+			<h5>기사 번호 : <span id="dempphone"></span> </h5>
 			<input type="hidden" id="claim" value="${claimno}"/>
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="basic-addon2">패널티 내용</span>
