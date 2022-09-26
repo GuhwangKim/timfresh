@@ -55,10 +55,9 @@
 			contentType: "application/json",
 			dataType: "json",
 			success: function(){
-				alert('성공');
+				alert('입력성공');
 				return true;
 			}
-			
 		})
 	}
 </script>

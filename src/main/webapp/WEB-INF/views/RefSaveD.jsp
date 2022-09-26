@@ -35,12 +35,10 @@
 			$('#dempname').append(data.dempname);
 			$('#dempphone').append(data.dempphone);
 		}
-		
 	)
 	.catcher(err => {
 		console.log("Fetch Error",err);
 	})
-	
 	
 	function rsave() {
 		var jsonData=JSON.stringify({
@@ -58,16 +56,13 @@
 			contentType: "application/json",
 			dataType: "json",
 			success: function(){
-				alert('성공');
+				alert('입력성공');
 				return true;
 			}
 			
 		})
-		
-		
 	}
 </script>
-
 
 <body>
 	<div id="Ques_WriteForm">

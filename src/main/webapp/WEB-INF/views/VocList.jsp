@@ -61,7 +61,6 @@
 			$('#table1').append("<tr><td><a href='vocView?claimno="+str.claimno+"'>"+str.claimno+"</a></td><td>"+str.resp+"</td><td>"+str.respcont+"</td><td>"+str.refyn+"</td><td>"+str.driverynd+"</td></tr>");
 		
 		}
-		
 	})
 	.catcher(err => {
 		console.log("Fetch Error",err);

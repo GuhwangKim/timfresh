@@ -49,7 +49,6 @@ public class RestControllerV {
 		List<VocView> result = list.stream()
 				.map(m -> new VocView(m.getClaimno(), m.getResp(), m.getRespcont(), m.getRefyn(), m.getDriverynd()))
 				.collect(Collectors.toList());
-
 		return result;
 	}
 	
@@ -70,7 +69,6 @@ public class RestControllerV {
 		Voc voc = sv.vView(claimno);
 		return voc;
 	}
-
 	
 	// voc 목록 (배상등록-운송사) 상세보기
 	@GetMapping("/vrboard/{claimno}")
@@ -157,7 +155,6 @@ public class RestControllerV {
 		private int driverynd;
 	}
 	
-	
 	// 기사 승인 확인 업데이트
 	@PutMapping("/pdchk/{refno}")
 	public Refund dupdate(@RequestBody Refund refund) {
@@ -166,7 +163,5 @@ public class RestControllerV {
 		ref=sv.rSave(ref);
 		return ref;
 	}
-	
-	
 
 }

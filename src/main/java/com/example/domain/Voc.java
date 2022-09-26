@@ -38,14 +38,4 @@ public class Voc {
 	@JoinColumn(name = "clientno")
 	private Clientcorp clientcorp;
 	
-
-	
-//	@JoinColumn(name = "delno")
-//	@ManyToOne
-//	private DelCorp delCorp;
-//	l
-//	
-//	@JoinColumn(name = "clientno")
-//	@ManyToOne
-//	private ClientCorp clientCorp;
 }

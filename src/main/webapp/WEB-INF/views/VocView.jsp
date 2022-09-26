@@ -24,12 +24,10 @@
 	
 	fetch ('http://localhost:8999/vboard/'+claimno)
 	.then(res => {
-		console.log(res);
 		return res.json();
 	}
 	)
 	.then(data => {
-		console.log(data)
 		 	if(data.refyn==0){
 		 		data.refyn='배상없음'
 	        } else if (data.refyn==11) {
